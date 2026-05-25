@@ -47,32 +47,6 @@ Ingestion flow:
 4. Text is chunked, embedded, and upserted to Qdrant.
 5. Users can retrieve the indexed context through HTTP or WebSocket chat.
 
-## Chat Session Memory
-
-Chat supports short-term, session-level memory for simple conversational facts such as the user's first name. The memory is stored in MongoDB in the `chat_sessions` collection and is scoped by both authenticated user and `session_id`.
-
-The frontend should send the same `session_id` for related chat messages. If a chat request omits `session_id`, the backend generates one and returns it in the chat response. Reuse that returned value on the next message in the same conversation.
-
-Example HTTP flow:
-
-```json
-{
-  "message": "Ja se zovem Marcel",
-  "session_id": "session-123"
-}
-```
-
-The assistant stores `memory.user_name = "Marcel"` for that session and skips RAG. A later request with the same `session_id`:
-
-```json
-{
-  "message": "Kako se ja zovem?",
-  "session_id": "session-123"
-}
-```
-
-returns an answer from session memory and also skips RAG. Knowledge-base questions continue through the existing PDF/blog retrieval pipeline and remain grounded in retrieved indexed context.
-
 ## Running
 
 Prerequisites:
@@ -94,33 +68,4 @@ The API will be available at:
 - MinIO console: `http://127.0.0.1:9001`
 - Qdrant dashboard: `http://127.0.0.1:6333/dashboard`
 
-## Health Endpoints
 
-- `GET /health`: liveness check. Returns `200` when the FastAPI process is running.
-- `GET /health/ready`: readiness check. Returns `200` when MongoDB, MinIO, and Qdrant are reachable; returns `503` when one or more dependencies are unavailable.
-
-Healthy readiness response:
-
-```json
-{
-  "status": "ok",
-  "checks": {
-    "mongo": "ok",
-    "minio": "ok",
-    "qdrant": "ok"
-  }
-}
-```
-
-Degraded readiness response:
-
-```json
-{
-  "status": "degraded",
-  "checks": {
-    "mongo": "ok",
-    "minio": "ok",
-    "qdrant": "error"
-  }
-}
-```
