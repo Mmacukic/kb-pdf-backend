@@ -6,7 +6,7 @@ from app.schemas.auth import CurrentUser
 
 
 def test_get_sources_returns_pdf_and_blog_sources(client, authenticate_as_user, monkeypatch):
-    async def fake_list_knowledge_sources(current_user):
+    async def fake_list_knowledge_sources():
         return [
             {
                 "id": "pdf-1",

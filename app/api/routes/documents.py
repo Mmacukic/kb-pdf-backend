@@ -44,11 +44,9 @@ async def upload_pdf(
     response_model=list[DocumentResponse]
 )
 async def get_documents(
-    current_user: CurrentUser = Depends(get_current_user)
+    _current_user: CurrentUser = Depends(get_current_user)
 ):
-    return await list_documents(
-        current_user=current_user
-    )
+    return await list_documents()
 
 
 @router.get(

@@ -37,11 +37,9 @@ async def scrape_blog(
     response_model=list[BlogSourceResponse]
 )
 async def get_blog_sources(
-    current_user: CurrentUser = Depends(get_current_user)
+    _current_user: CurrentUser = Depends(get_current_user)
 ):
-    return await list_blog_sources(
-        current_user=current_user
-    )
+    return await list_blog_sources()
 
 
 @router.delete(

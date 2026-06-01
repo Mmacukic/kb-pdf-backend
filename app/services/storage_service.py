@@ -1,6 +1,5 @@
 from io import BytesIO
 
-from fastapi import UploadFile
 from minio import Minio
 
 
@@ -24,30 +23,6 @@ def ensure_bucket_exists() -> None:
         minio_client.make_bucket(
             settings.minio_bucket_name
         )
-
-
-# async def upload_pdf_to_storage(
-#     file: UploadFile,
-#     storage_key: str
-# ) -> dict:
-#     file_content = await file.read()
-#
-#     file_stream = BytesIO(file_content)
-#
-#     minio_client.put_object(
-#         bucket_name=settings.minio_bucket_name,
-#         object_name=storage_key,
-#         data=file_stream,
-#         length=len(file_content),
-#         content_type=file.content_type or "application/pdf"
-#     )
-#
-#     return {
-#         "storage_key": storage_key,
-#         "size": len(file_content),
-#         "content_type": file.content_type or "application/pdf"
-#     }
-
 
 def upload_pdf_bytes_to_storage(
     file_bytes: bytes,

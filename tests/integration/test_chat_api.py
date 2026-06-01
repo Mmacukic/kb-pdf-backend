@@ -7,7 +7,7 @@ def test_http_chat_uses_authenticated_user_and_returns_sources(
     authenticate_as_user,
     monkeypatch,
 ):
-    async def fake_chat_with_agent(message, session_id, current_user, background_tasks):
+    async def fake_chat_with_agent(message, session_id, current_user):
         assert current_user.username == "user"
         assert session_id is None
         return {
@@ -56,7 +56,7 @@ def test_websocket_chat_returns_answer_with_sources(client, monkeypatch):
         assert token == "valid-token"
         return CurrentUser(username="user", role="user")
 
-    async def fake_chat_with_agent(message, session_id, current_user, background_tasks):
+    async def fake_chat_with_agent(message, session_id, current_user):
         assert session_id == "session-1"
         return {
             "answer": f"grounded answer for {message}",

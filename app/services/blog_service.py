@@ -49,9 +49,7 @@ async def scrape_and_index_blog(
     return blog_source
 
 
-async def list_blog_sources(
-    current_user: CurrentUser
-) -> list[dict]:
+async def list_blog_sources() -> list[dict]:
     return await list_active_blog_sources()
 
 

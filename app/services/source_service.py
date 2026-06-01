@@ -35,9 +35,9 @@ def _blog_to_source(blog_source: dict) -> dict:
     }
 
 
-async def list_knowledge_sources(current_user: CurrentUser) -> list[dict]:
-    documents = await list_documents(current_user=current_user)
-    blog_sources = await list_blog_sources(current_user=current_user)
+async def list_knowledge_sources() -> list[dict]:
+    documents = await list_documents()
+    blog_sources = await list_blog_sources()
 
     sources = [
         *[_document_to_source(document) for document in documents],

@@ -225,9 +225,7 @@ async def upload_document(
     return document
 
 
-async def list_documents(
-    current_user: CurrentUser
-) -> list[dict]:
+async def list_documents() -> list[dict]:
     return await list_active_documents()
 
 

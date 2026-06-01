@@ -37,7 +37,6 @@ def build_context_from_chunks(chunks: list[dict]) -> str:
         context_blocks.append(
             f"{source_label}\n{chunk.get('text', '')}"
         )
-
     return "\n\n---\n\n".join(context_blocks)
 
 

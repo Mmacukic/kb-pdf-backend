@@ -74,18 +74,6 @@ async def index_pdf_for_rag(
         }
     )
 
-    await log_file_action(
-        action="pdf_text_indexed",
-        username=username,
-        document_id=document_id,
-        filename=filename,
-        severity="INFO",
-        metadata={
-            "version": version,
-            "chunks_count": len(vector_chunks)
-        }
-    )
-
     return len(vector_chunks)
 
 
@@ -144,18 +132,6 @@ async def index_blog_for_rag(
             "scraper": scraper,
             "chunks_count": len(vector_chunks),
             "vector_database": "qdrant"
-        }
-    )
-
-    await log_file_action(
-        action="blog_text_indexed",
-        username=username,
-        severity="INFO",
-        metadata={
-            "blog_source_id": blog_source_id,
-            "url": url,
-            "title": title,
-            "chunks_count": len(vector_chunks)
         }
     )
 

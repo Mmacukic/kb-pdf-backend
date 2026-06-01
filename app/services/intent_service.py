@@ -1,4 +1,5 @@
 import re
+from dataclasses import dataclass
 from enum import Enum
 
 
@@ -7,6 +8,12 @@ class Intent(str, Enum):
     MEMORY_QUERY = "memory_query"
     SMALL_TALK = "small_talk"
     RAG_QUERY = "rag_query"
+
+
+@dataclass(frozen=True)
+class IntentResult:
+    intent: Intent
+    user_name: str | None = None
 
 
 NAME_PATTERNS = [
@@ -47,18 +54,26 @@ def normalize_message(message: str) -> str:
 
 
 def classify_intent(message: str) -> Intent:
-    normalized_message = normalize_message(message)
+    return classify_message(message).intent
 
-    if extract_user_name(message):
-        return Intent.MEMORY_UPDATE
+
+def classify_message(message: str) -> IntentResult:
+    normalized_message = normalize_message(message)
+    user_name = extract_user_name(message)
+
+    if user_name:
+        return IntentResult(
+            intent=Intent.MEMORY_UPDATE,
+            user_name=user_name
+        )
 
     if any(pattern.search(normalized_message) for pattern in MEMORY_QUERY_PATTERNS):
-        return Intent.MEMORY_QUERY
+        return IntentResult(intent=Intent.MEMORY_QUERY)
 
     if normalized_message.rstrip("!.?") in SMALL_TALK_MESSAGES:
-        return Intent.SMALL_TALK
+        return IntentResult(intent=Intent.SMALL_TALK)
 
-    return Intent.RAG_QUERY
+    return IntentResult(intent=Intent.RAG_QUERY)
 
 
 def extract_user_name(message: str) -> str | None:

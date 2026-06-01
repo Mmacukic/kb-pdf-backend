@@ -1,4 +1,4 @@
-from fastapi import APIRouter, BackgroundTasks, HTTPException, WebSocket
+from fastapi import APIRouter, HTTPException, WebSocket
 from starlette.websockets import WebSocketDisconnect
 
 from app.api.deps import get_current_user_from_token
@@ -74,8 +74,7 @@ async def websocket_chat(websocket: WebSocket):
                 response = await chat_with_agent(
                     message=message,
                     session_id=session_id,
-                    current_user=current_user,
-                    background_tasks=BackgroundTasks()
+                    current_user=current_user
                 )
             except HTTPException as exception:
                 await log_file_action(

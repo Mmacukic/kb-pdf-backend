@@ -19,9 +19,9 @@ router = APIRouter()
 
 @router.get("", response_model=list[KnowledgeSourceResponse])
 async def get_sources(
-    current_user: CurrentUser = Depends(get_current_user)
+    _current_user: CurrentUser = Depends(get_current_user)
 ):
-    return await list_knowledge_sources(current_user=current_user)
+    return await list_knowledge_sources()
 
 
 @router.post(
